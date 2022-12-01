@@ -1,12 +1,13 @@
-# Jeu.py
-from random import randint
 
+from random import randint
+from ezCLI import *
+from ezTK import *
 from Afficher import Afficher
 from Grille import Grille
 from JoueurAI import JoueurAI
 from OrdiAI import OrdiAI
 
-defaultProba = 0.8 # probabilité que la tuile nouvellement générée ait une valeur de 2
+defaultProba = 0.8  # probabilité que la tuile nouvellement générée ait une valeur de 2
 
 actionDic = {
     0: "UP",
@@ -22,7 +23,6 @@ timeLimit = 0.3
 allowance = 0.05
 
 
-
 class Jeu:
     def __init__(self, size=4):
         self.grille = Grille(size)
@@ -31,16 +31,14 @@ class Jeu:
         self.afficher = None
         self.over = False
 
-
     def setOrdiAI(self, ordiAI):
         self.ordiAI = ordiAI
 
     def setJoueurAI(self, JoueurAI):
         self.JoueurAI = JoueurAI
 
-    def setAfficher(self, afficher ):
-        self.afficher  = afficher
-
+    def setAfficher(self, afficher):
+        self.afficher = afficher
 
     # def updateAlarm(self, currTime):
     #     if currTime - self.prevTime > timeLimit + allowance:
@@ -50,17 +48,16 @@ class Jeu:
     #             pass
     #         self.prevTime = time.perf_counter()
 
-
     # Insertion aléatoire de tuiles
-    def insertRandonTile(self) -> object :
+
+    def insertRandonTile(self) -> object:
         tileValue = self.newTuileVal()
         cells = self.grille.getCellVide()
         cell = cells[randint(0, len(cells) - 1)]
         self.grille.setValeur(cell, tileValue)
 
-
     def newTuileVal(self):
-        if randint(0, 99) < 100 * defaultProba :
+        if randint(0, 99) < 100 * defaultProba:
             return 2
         else:
             return 4
@@ -68,12 +65,12 @@ class Jeu:
     def gameOver(self):
         return not self.grille.movePossible()
 
-
     def start(self):
-        for i in range(2): # Initialiser la grille, insérer deux tuiles aléatoires
+        for i in range(2):  # Initialiser la grille, insérer deux tuiles aléatoires
             self.insertRandonTile()
 
-        self.afficher.afficheGrille(self.grille) # afficher la grille initial
+        # afficher la grille initial
+        self.afficher.afficheGrille(self.grille)
 
         # D'abord le tour du joueur
         tour = TOUR_JOUEUR
@@ -82,7 +79,7 @@ class Jeu:
         ## self.prevTime = time.perf_counter()
 
         while not self.gameOver() and not self.over:
-        # Cloner pour s'assurer que l'IA ne peut pas changer la vraie grille
+            # Cloner pour s'assurer que l'IA ne peut pas changer la vraie grille
             grilleClone = self.grille.clone()
 
             move = None
@@ -98,8 +95,8 @@ class Jeu:
                     # Mise à jour la valeur max des tuiles
                         maxVal = self.grille.getMaxVal()
 
-                        # Valeur pour ganger
-                        if maxVal == 256:
+                        # Valeur pour gagner
+                        if maxVal == 32:  # changer pour 2048
                             self.over = True
                             self.afficher.afficheGrille(self.grille)
 
@@ -123,28 +120,40 @@ class Jeu:
                 self.afficher.afficheGrille(self.grille)
 
             # Exceeding the Time Allotted for Any Turn Terminates the Game
-           ## self.updateAlarm(time.perf_counter())
+           # self.updateAlarm(time.perf_counter())
 
             tour = 1 - tour
 
             #score = self.playerAI.evaluation(grilleCopy)
-            #print(score)
+            # print(score)
 
         print("Gagner!")
 
 
-
 def main():
+
+    # global win_start
     jeu = Jeu()
     joueurAI = JoueurAI()
     ordiAI = OrdiAI()
     afficher = Afficher()
-    jeu.setAfficher (afficher)
+
+    # win_start = Win(title='2048', op=3)
+    # frame = Frame(win_start)
+    # Label(frame, text='Lancement du jeu', bg='#000', fg='#FFF',
+    #       font='Arial 18 bold', height=2)
+
+    jeu.setAfficher(afficher)
     jeu.setJoueurAI(joueurAI)
     jeu.setOrdiAI(ordiAI)
 
+    # Button(win_start, text='START', command=jeu.start(), font='Arial 18 bold',
+    #        bg='#000', fg='#FFF')
+
     jeu.start()
+
+    # win_start.loop()
+
 
 if __name__ == '__main__':
     main()
-

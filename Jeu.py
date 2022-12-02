@@ -19,8 +19,8 @@ actionDic = {
 (TOUR_JOUEUR, TOUR_ORDI) = (0, 1)
 
 # Time Limit
-timeLimit = 0.3
-allowance = 0.05
+# timeLimit = 0.3
+# allowance = 0.05
 
 
 class Jeu:

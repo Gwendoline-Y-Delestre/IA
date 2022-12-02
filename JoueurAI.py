@@ -1,7 +1,5 @@
 # JoueurAI.py
-from random import randint
-from BaseAI import BaseAI
-from pdb import set_trace
+
 import time
 
 timeLimit = 0.2
@@ -12,7 +10,7 @@ def h(grille):
     return hash(tuple([tuple(x) for x in grille.map]))
 
 
-class JoueurAI(BaseAI):
+class JoueurAI():
 
     def getMove(self, grid):
         '''

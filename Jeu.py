@@ -30,8 +30,8 @@ class Jeu:
     def setOrdiAI(self, ordiAI):
         self.ordiAI = ordiAI
 
-    def setJoueurAI(self, JoueurAI):
-        self.JoueurAI = JoueurAI
+    def setJoueurAI(self, joueurAI):
+        self.joueurAI = joueurAI
 
     def setAfficher(self, afficher):
         self.afficher = afficher

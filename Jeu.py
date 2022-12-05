@@ -18,10 +18,6 @@ actionDic = {
 
 (TOUR_JOUEUR, TOUR_ORDI) = (0, 1)
 
-# Time Limit
-# timeLimit = 0.3
-# allowance = 0.05
-
 
 class Jeu:
     def __init__(self, size=4):
@@ -40,16 +36,8 @@ class Jeu:
     def setAfficher(self, afficher):
         self.afficher = afficher
 
-    # def updateAlarm(self, currTime):
-    #     if currTime - self.prevTime > timeLimit + allowance:
-    #         self.over = True
-    #     else:
-    #         while time.perf_counter() - self.prevTime < timeLimit + allowance:
-    #             pass
-    #         self.prevTime = time.perf_counter()
-
+   
     # Insertion aléatoire de tuiles
-
     def insertRandonTile(self) -> object:
         tileValue = self.newTuileVal()
         cells = self.grille.getCellVide()
@@ -75,8 +63,6 @@ class Jeu:
         # D'abord le tour du joueur
         tour = TOUR_JOUEUR
         maxVal = 0
-
-        ## self.prevTime = time.perf_counter()
 
         while not self.gameOver() and not self.over:
             # Cloner pour s'assurer que l'IA ne peut pas changer la vraie grille
@@ -119,13 +105,8 @@ class Jeu:
             if not self.over:
                 self.afficher.afficheGrille(self.grille)
 
-            # Exceeding the Time Allotted for Any Turn Terminates the Game
-           # self.updateAlarm(time.perf_counter())
 
             tour = 1 - tour
-
-            #score = self.playerAI.evaluation(grilleCopy)
-            # print(score)
 
         print("Gagner!")
 

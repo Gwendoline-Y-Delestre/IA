@@ -1,6 +1,5 @@
 # OrdiAI.py
 from random import randint
-from BaseAI import BaseAI
 
 class OrdiAI():
     def getMove(self, grid):

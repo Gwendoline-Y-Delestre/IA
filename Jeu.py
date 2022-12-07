@@ -72,7 +72,7 @@ class Jeu:
 
             if tour == TOUR_JOUEUR:
                 print("Mouvement de joueur:", end="")
-                move = self.JoueurAI.getMove(grilleClone)
+                move = self.joueurAI.getMove(grilleClone)
                 print(actionDic[move])
 
                 if move != None and move >= 0 and move < 4:

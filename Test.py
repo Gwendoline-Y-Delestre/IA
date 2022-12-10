@@ -64,14 +64,20 @@ class Test:
             grilleClone = self.grille.clone()
 
             if tour == TOUR_JOUEUR:
-                #mouvement = self.grille.getMovePossible()
-                #move = mouvement[j]
+                mouvement = self.grille.getMovePossible()
+
                 j += 1
-                move = j
+
+                k=j
+                while k not in mouvement :
+                    k += 1
+                    if k == 3:
+                        k = -1
+                        
+                move = k
 
                 if j == 3:
                     j=-1
-
 
                 print("Mouvement de joueur:", end="")
                 print(actionDic[move])

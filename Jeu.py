@@ -7,7 +7,7 @@ from Grille import Grille
 from JoueurAI import JoueurAI
 from OrdiAI import OrdiAI
 
-defaultProba = 0.8  # probabilité que la tuile nouvellement générée ait une valeur de 2
+defaultProba = 0.9 # probabilité que la tuile nouvellement générée ait une valeur de 2
 
 actionDic = {
     0: "UP",
@@ -20,12 +20,13 @@ actionDic = {
 
 
 class Jeu:
-    def __init__(self, size=4):
-        self.grille = Grille(size)
+    def __init__(self):
+        self.grille = Grille()
         self.ordiAI = None
         self.joueurAI = None
         self.afficher = None
         self.over = False
+
 
     def setOrdiAI(self, ordiAI):
         self.ordiAI = ordiAI
@@ -33,19 +34,19 @@ class Jeu:
     def setJoueurAI(self, joueurAI):
         self.joueurAI = joueurAI
 
-    def setAfficher(self, afficher):
-        self.afficher = afficher
+    def setAfficher(self, afficher ):
+        self.afficher  = afficher
 
-   
     # Insertion aléatoire de tuiles
-    def insertRandonTile(self) -> object:
-        tileValue = self.newTuileVal()
+    def insertRandonTile(self) :
+        tuileVal = self.newTuileVal()
         cells = self.grille.getCellVide()
         cell = cells[randint(0, len(cells) - 1)]
-        self.grille.setValeur(cell, tileValue)
+        self.grille.setValeur(cell, tuileVal)
+
 
     def newTuileVal(self):
-        if randint(0, 99) < 100 * defaultProba:
+        if randint(0, 99) < 100 * defaultProba :
             return 2
         else:
             return 4
@@ -53,44 +54,44 @@ class Jeu:
     def gameOver(self):
         return not self.grille.movePossible()
 
+
     def start(self):
-        for i in range(2):  # Initialiser la grille, insérer deux tuiles aléatoires
+        for i in range(2): # Initialiser la grille, insérer deux tuiles aléatoires
             self.insertRandonTile()
 
-        # afficher la grille initial
-        self.afficher.afficheGrille(self.grille)
+        self.afficher.afficheGrille(self.grille) # afficher la grille initial
 
         # D'abord le tour du joueur
         tour = TOUR_JOUEUR
-        maxVal = 0
+
+        nbmoves = 0 # calculer le nombre de mouvement
 
         while not self.gameOver() and not self.over:
-            # Cloner pour s'assurer que l'IA ne peut pas changer la vraie grille
+        # Cloner pour s'assurer que l'IA ne peut pas changer la vraie grille
             grilleClone = self.grille.clone()
-
-            move = None
 
             if tour == TOUR_JOUEUR:
                 print("Mouvement de joueur:", end="")
                 move = self.joueurAI.getMove(grilleClone)
                 print(actionDic[move])
 
-                if move != None and move >= 0 and move < 4:
+                if move != None:
                     if self.grille.movePossible([move]):
                         self.grille.move(move)
+                        nbmoves += 1
                     # Mise à jour la valeur max des tuiles
                         maxVal = self.grille.getMaxVal()
 
-                        # Valeur pour gagner
-                        if maxVal == 32:  # changer pour 2048
+                        # Valeur pour ganger
+                        if maxVal == 256:
                             self.over = True
                             self.afficher.afficheGrille(self.grille)
-
+                            print("Gagner!")
+                            print(time.perf_counter())
+                            print("nb de mouvement :", nbmoves)
                     else:
-                        print("Mouvement interdit")
                         self.over = True
                 else:
-                    print("Mouvement interdit")
                     self.over = True
             else:
                 print("Nouvelles tuiles créées par ordi:")
@@ -99,16 +100,14 @@ class Jeu:
                 if move and self.grille.inserPossible(move):
                     self.grille.setValeur(move, self.newTuileVal())
                 else:
-                    print("Invalid Ordinateur AI Move")
                     self.over = True
 
             if not self.over:
                 self.afficher.afficheGrille(self.grille)
-
-
+                ######################
+                print(time.perf_counter())
+                print("nb de mouvement :", nbmoves)
             tour = 1 - tour
-
-        print("Gagner!")
 
 
 def main():

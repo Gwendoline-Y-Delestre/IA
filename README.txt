@@ -16,5 +16,5 @@ graphique et à l'affichage dans la console.
 Vous pouvez décommenter les dernières lignes de code des fichiers "Jeu.py", "JeuMinmax.py" et "Test.py" à partir de la fonction 
 main() pour pouvoir lancer individuellement chaque jeu.
 
-Attention, nous nous sommes rendu compte que l'interface graphiue fonctionnait bien sur Windows mais pas sur Mac. L'interface
+Attention, nous nous sommes rendu compte que l'interface graphique fonctionnait bien sur Windows mais pas sur Mac. L'interface
 dans la console par contre fonctionne sur les deux.

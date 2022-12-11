@@ -1,13 +1,14 @@
 
 from random import randint
-from ezCLI import *
-from ezTK import *
 from Afficher import Afficher
 from Grille import Grille
 from JoueurAI import JoueurAI
 from OrdiAI import OrdiAI
+import time
+import tkinter as tk
+from tkinter import ttk
 
-defaultProba = 0.9 # probabilité que la tuile nouvellement générée ait une valeur de 2
+defaultProba = 0.9  # probabilité que la tuile nouvellement générée ait une valeur de 2
 
 actionDic = {
     0: "UP",
@@ -27,26 +28,24 @@ class Jeu:
         self.afficher = None
         self.over = False
 
-
     def setOrdiAI(self, ordiAI):
         self.ordiAI = ordiAI
 
     def setJoueurAI(self, joueurAI):
         self.joueurAI = joueurAI
 
-    def setAfficher(self, afficher ):
-        self.afficher  = afficher
+    def setAfficher(self, afficher):
+        self.afficher = afficher
 
     # Insertion aléatoire de tuiles
-    def insertRandonTile(self) :
+    def insertRandonTile(self):
         tuileVal = self.newTuileVal()
         cells = self.grille.getCellVide()
         cell = cells[randint(0, len(cells) - 1)]
         self.grille.setValeur(cell, tuileVal)
 
-
     def newTuileVal(self):
-        if randint(0, 99) < 100 * defaultProba :
+        if randint(0, 99) < 100 * defaultProba:
             return 2
         else:
             return 4
@@ -54,20 +53,27 @@ class Jeu:
     def gameOver(self):
         return not self.grille.movePossible()
 
-
     def start(self):
-        for i in range(2): # Initialiser la grille, insérer deux tuiles aléatoires
+        for i in range(2):  # Initialiser la grille, insérer deux tuiles aléatoires
             self.insertRandonTile()
 
-        self.afficher.afficheGrille(self.grille) # afficher la grille initial
+        # création de la fenêtre de jeu
+        win = tk.Tk()
+        win.title("2048")
+        win.geometry('500x500+50+10')
+        container = ttk.Frame(win)
+        message = ""
+
+        # afficher la grille initiale
+        self.afficher.afficheGrille(self.grille, win, container, message)
 
         # D'abord le tour du joueur
         tour = TOUR_JOUEUR
 
-        nbmoves = 0 # calculer le nombre de mouvement
+        nbmoves = 0  # calculer le nombre de mouvement
 
         while not self.gameOver() and not self.over:
-        # Cloner pour s'assurer que l'IA ne peut pas changer la vraie grille
+            # Cloner pour s'assurer que l'IA ne peut pas changer la vraie grille
             grilleClone = self.grille.clone()
 
             if tour == TOUR_JOUEUR:
@@ -83,11 +89,13 @@ class Jeu:
                         maxVal = self.grille.getMaxVal()
 
                         # Valeur pour ganger
-                        if maxVal == 256:
+                        if maxVal == 2048:
                             self.over = True
-                            self.afficher.afficheGrille(self.grille)
-                            print("Gagner!")
-                            print("Temps ：", round(time.perf_counter(), 2), " s")
+                            message = "Gagné !"
+                            self.afficher.afficheGrille(
+                                self.grille, win, container, message)
+                            print("Gagné!")
+                            print(time.perf_counter())
                             print("nb de mouvement :", nbmoves)
                     else:
                         self.over = True
@@ -103,37 +111,28 @@ class Jeu:
                     self.over = True
 
             if not self.over:
-                self.afficher.afficheGrille(self.grille)
-                ######################
-                print("Temps ：", round(time.perf_counter(), 2), " s")
+                message = "temps : " + str(time.perf_counter()) + \
+                    "  nb de mouvement : " + str(nbmoves)
+                self.afficher.afficheGrille(
+                    self.grille, win, container, message)
+
+                print(time.perf_counter())
                 print("nb de mouvement :", nbmoves)
             tour = 1 - tour
 
 
-def main():
+# def main():
 
-    # global win_start
-    jeu = Jeu()
-    joueurAI = JoueurAI()
-    ordiAI = OrdiAI()
-    afficher = Afficher()
+#     jeu = Jeu()
+#     joueurAI = JoueurAI()
+#     ordiAI = OrdiAI()
+#     afficher = Afficher()
 
-    # win_start = Win(title='2048', op=3)
-    # frame = Frame(win_start)
-    # Label(frame, text='Lancement du jeu', bg='#000', fg='#FFF',
-    #       font='Arial 18 bold', height=2)
+#     jeu.setAfficher(afficher)
+#     jeu.setJoueurAI(joueurAI)
+#     jeu.setOrdiAI(ordiAI)
 
-    jeu.setAfficher(afficher)
-    jeu.setJoueurAI(joueurAI)
-    jeu.setOrdiAI(ordiAI)
+#     jeu.start()
 
-    # Button(win_start, text='START', command=jeu.start(), font='Arial 18 bold',
-    #        bg='#000', fg='#FFF')
-
-    jeu.start()
-
-    # win_start.loop()
-
-
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()

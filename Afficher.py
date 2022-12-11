@@ -46,10 +46,22 @@ class Afficher(BaseAffiche):
     def afficher(self, grille):
         pass
 
-    def grilleAffiche(self, grille):
+    def grilleAffiche(self, grille, win, container, message):
 
-        win = Win(title='2048', bg='#FFF', op=2, grow=True)
-        win.grid = Frame(win, fold=4, bg='#eee')
+        # On creer un canvas pour pouvoir intégrer des frames
+        # et ensuite les mettre à jour à chaque appel de la fonction
+        canvas = tk.Canvas(container, height=450, width=450)
+        canvas.create_window((0, 0), window=container, anchor="nw")
+
+        # label_message permet de connaitre le temps et le nombre de coup
+        label_message = tk.Label(container, text=message)
+        label_message.pack()
+
+        # ce frame donne la grille de jeu
+        lframe = tk.LabelFrame(
+            canvas, text="Grille de jeu :", height=400, width=400)
+
+        lframe.pack(fill="both", expand="yes")
 
         for i in range(3 * grille.size):
 
@@ -57,19 +69,31 @@ class Afficher(BaseAffiche):
                 v = grille.map[int(i / 3)][j]
 
                 if i % 3 == 1:
-                    # creer grille dans terminal
+                    # créer grille dans terminal
                     string = str(v).center(7, " ")
-                    # creer une grille de 4*4 dans une autre fenetre
-                    Label(win.grid, height=5, width=9,
-                          bg=colorMapTK[v], border=1, text=string)
+
+                    # créer une grille de 4*4 dans une fenetre graphique
+                    label = tk.Label(lframe, height=5, width=9,
+                                     bg=colorMapTK[v], border=1, text=string).grid(row=int(i), column=j)
                 else:
                     string = " "  # afficher les espaces entre les lignes
-                #my_label.config(text=cTemp % (colorMap[v], string), end="")
+
                 print(cTemp % (colorMap[v], string), end="")
 
             print("")
             if i % 3 == 2:
                 print("")  # afficher les espaces entre les lignes
 
-        win.after(500, lambda: win.exit())
-        win.loop()
+        # mise à jour de la grille
+        container.pack()
+        canvas.pack(side="left", fill="both", expand=True)
+
+        lframe.update_idletasks()
+        label_message.update_idletasks()
+        time.sleep(1)
+        label_message.destroy()
+        lframe.destroy()
+        canvas.update_idletasks()
+        canvas.destroy()
+        win.update_idletasks()
+        win.update()

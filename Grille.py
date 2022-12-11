@@ -1,28 +1,31 @@
 # Grille.py
 from copy import deepcopy
 
-vecDirection = (UP_VEC, DOWN_VEC, LEFT_VEC, RIGHT_VEC) = ((-1, 0), (1, 0), (0, -1), (0, 1))
+vecDirection = (UP_VEC, DOWN_VEC, LEFT_VEC, RIGHT_VEC) = (
+    (-1, 0), (1, 0), (0, -1), (0, 1))
 vecIndex = [UP, DOWN, LEFT, RIGHT] = range(4)
 
 
 class Grille:
-    def __init__(self):
+    def __init__(self, size=4):
         '''
             UP = 0
             DOWN = 1
             LEFT = 2
             RIGHT = 3
         '''
+        self.size = size
         self.map = [[0] * 4 for i in range(4)]
 
-
     # Faire un deepcopy de grille
+
     def clone(self):
         cloneGrille = Grille()
         cloneGrille.map = deepcopy(self.map)
+        cloneGrille.size = self.size
         return cloneGrille
 
-    # renvoi des cellules vides
+    # renvoi les cellules vides
     def getCellVide(self):
         cell = []
         for x in range(4):
@@ -61,7 +64,6 @@ class Grille:
             return self.moveL()
         if d == RIGHT:
             return self.moveR()
-
 
     # mouvement vers le haut
     def moveU(self):
@@ -131,7 +133,6 @@ class Grille:
                 self.map[i][j] = value
         return moved
 
-
     # Fusionner des tuiles
     def fusionTuile(self, cell):
         if len(cell) <= 1:
@@ -139,7 +140,7 @@ class Grille:
         i = 0
         while i < len(cell) - 1:
             if cell[i] == cell[i + 1]:
-                cell[i] *= 2 # fusionner
+                cell[i] *= 2  # fusionner
                 del cell[i + 1]
             i += 1
 
@@ -149,9 +150,10 @@ class Grille:
         for x in range(4):
             for y in range(4):
                 if self.map[x][y]:  # Si la cellule actuelle est remplie
-                    for i in checkingMoves: # Vérifier la valeur de la cellule adjacente
+                    for i in checkingMoves:  # Vérifier la valeur de la cellule adjacente
                         move = vecDirection[i]
-                        adjCellValue = self.getCellVal((x + move[0], y + move[1]))
+                        adjCellValue = self.getCellVal(
+                            (x + move[0], y + move[1]))
                         # Si la valeur est la même ou si la cellule adjacente est vide
                         if adjCellValue == self.map[x][y] or adjCellValue == 0:
                             return True
@@ -174,5 +176,3 @@ class Grille:
             return self.map[pos[0]][pos[1]]
         else:
             return None
-
-

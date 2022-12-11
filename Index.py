@@ -1,5 +1,3 @@
-# from ezCLI import *
-# from ezTK import *
 import tkinter as tk
 from Jeu import Jeu as jeudebase
 from JeuMinmax import Jeu as jeuminmax

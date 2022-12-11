@@ -1,7 +1,6 @@
 # Afficher.py
 import tkinter as tk
-from ezCLI import *
-from ezTK import *
+
 from BaseAffiche import BaseAffiche
 import time
 

@@ -46,19 +46,20 @@ class JoueurAI():
 
         filsMax, noeudMax = None, float('-inf') # initialiser fils et la valeur de noeud max
 
-        ### Algorithme α-β
+        ### Algorithme d’élagage α-β
         for fils in self.filsMaxDict[key]:
-            # Obtenir la valeur du noeud au niveau suivant (profondeur de recherche)
+            # obtenir le score d'un noeud fils
             _, _, noeud = self.minimiser(fils[0], alpha, beta, depth + 1)
 
-            if noeud > noeudMax:
-                bestMove, filsMax, noeudMax = fils[1], fils[0], noeud # Mises à jour
+            if noeud > noeudMax: # # noeud fils > noeud courant
+                # Mettre à jour le score du noeud courant, noter le meilleur mouvement
+                bestMove, filsMax, noeudMax = fils[1], fils[0], noeud
 
             if noeudMax >= beta: # α > β, pas besoin d’être explorée
                 break
 
             if noeudMax > alpha:
-                alpha = noeudMax # Mises à jour le score minimum
+                alpha = noeudMax # mettre à jour le score minimum(aplha)
 
         return bestMove, filsMax, noeudMax
 
@@ -89,16 +90,17 @@ class JoueurAI():
 
         ### Algorithme α-β
         for fils in self.filsMinDict[key]:
+            # obtenir le score d'un noeud fils
             _, _, noeud = self.maximiser(fils, alpha, beta, depth + 1)
 
-            if noeud < noeudMin:
-                _, filsMin, noeudMin = _, fils, noeud
+            if noeud < noeudMin: # noeud fils < noeud courant
+                _, filsMin, noeudMin = _, fils, noeud # mettre à jour le score du noeud courant
 
             if noeudMin <= alpha: # β < α, pas besoin d’être explorée
                 break
 
             if noeudMin < beta:
-                beta = noeudMin # Mises à jour le score maximum
+                beta = noeudMin # mettre à jour le score maximum(beta)
 
         return _, filsMin, noeudMin
 

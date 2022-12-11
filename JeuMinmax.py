@@ -94,7 +94,7 @@ class Jeu:
                             self.over = True
                             self.afficher.afficheGrille(self.grille)
                             print("Gagner!")
-                            print(time.perf_counter())
+                            print("Temps ：", round(time.perf_counter(), 2), " s")
                             print("nb de mouvement :", nbmoves)
 
                     else:
@@ -116,7 +116,7 @@ class Jeu:
             if not self.over:
                 self.afficher.afficheGrille(self.grille)
                 ######################
-                print(time.perf_counter())
+                print("Temps ：", round(time.perf_counter(), 2), " s")
                 print("nb de mouvement :", nbmoves)
 
             tour = 1 - tour

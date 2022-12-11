@@ -116,8 +116,8 @@ class JoueurAI():
                 score += grille.map[i][j] * (i + j)
 
         cellVide = len(grille.getCellVide())
-        score -= score / (cellVide + 1) # +1 : évider la division à zero
-        # plus il y a de cellules vides, plus le score soustrait est petit
+        score += cellVide
+        # plus il y a de cellules vides, plus le score est grand
 
         if not grille.movePossible():
             score = 0

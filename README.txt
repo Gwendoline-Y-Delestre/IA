@@ -1,4 +1,5 @@
 L'application a entièrement été codée en python. Nous avons utilisé les librairies tkinter, random, time et copy.
+Télécharger le dossier en Zip et extraire tout les fichiers.
 
 Pour lancer l'application 2048 :
 

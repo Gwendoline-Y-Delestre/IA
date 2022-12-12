@@ -27,7 +27,7 @@ class JoueurAI():
 
     # Trouve la plus grande utilité (valeur du noeud) pour le joueur
     def maximiser(self, grille, alpha, beta, depth):
-        if depth > self.depthLimit:  # si fini ou la profondeur de recherche atteint le maximum
+        if depth > self.depthLimit:  # si la profondeur de recherche atteint le maximum
             return None, None, self.evaluation(grille)
         key = h(grille)  # Obtenez le hachage de la grille
         if key not in self.filsMaxDict:

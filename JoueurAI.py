@@ -114,8 +114,9 @@ class JoueurAI():
         score = 0
         for i in range(4):
             for j in range(4):
-                # calculer la valeur des tuiles et multiplier par un coefficient
-                # Signification du coefficient : Les positions dans le coin supérieur gauche et ses deux côtés adjacents ont des scores plus élevés
+        # calculer la valeur des tuiles et multiplier par un coefficient
+        # Signification du coefficient (i+j): 
+        # Les positions du coin inférieur droit et de ses deux côtés adjacents ont des scores plus élevés
                 score += grille.map[i][j] * (i + j)
 
         cellVide = len(grille.getCellVide())
